@@ -30,4 +30,24 @@ def isCollisionRect(rect1, rect2):
         y1_max <= y2_min or  # rect1 ниже rect2
         y2_max <= y1_min     # rect2 ниже rect1
     )
+    
+def intersectionAreaRect(rect1, rect2):
+    # Проверка корректности прямоугольников
+    if not isCorrectRect(rect1):
+        raise ValueError("Первый прямоугольник некорректный")
+    if not isCorrectRect(rect2):
+        raise ValueError("Второй прямоугольник некорректный")
+
+    (x1_min, y1_min), (x1_max, y1_max) = rect1
+    (x2_min, y2_min), (x2_max, y2_max) = rect2
+
+    # Координаты пересечения
+    x_overlap = min(x1_max, x2_max) - max(x1_min, x2_min)
+    y_overlap = min(y1_max, y2_max) - max(y1_min, y2_min)
+
+    # Если пересечения нет
+    if x_overlap <= 0 or y_overlap <= 0:
+        return 0
+
+    return x_overlap * y_overlap
 
