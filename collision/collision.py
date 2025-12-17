@@ -51,3 +51,24 @@ def intersectionAreaRect(rect1, rect2):
 
     return x_overlap * y_overlap
 
+def intersectionAreaMultiRect(rectangles):
+    if not isinstance(rectangles, (list, tuple)) or len(rectangles) == 0:
+        return 0
+    #Проверка корректности всех прямоугольников
+    for i, rect in enumerate(rectangles, start=1):
+        if not isCorrectRect(rect):
+            raise RectCorrectError(f"Прямоугольник #{i} некорректный")
+    #Начальные границы — первый прямоугольник
+    x_left, y_bottom = rectangles[0][0]
+    x_right, y_top = rectangles[0][1]
+    #Пересечение всех прямоугольников
+    for (xmin, ymin), (xmax, ymax) in rectangles[1:]:
+        x_left = max(x_left, xmin)
+        y_bottom = max(y_bottom, ymin)
+        x_right = min(x_right, xmax)
+        y_top = min(y_top, ymax)
+
+        if x_left >= x_right or y_bottom >= y_top:
+            return 0
+    return (x_right - x_left) * (y_top - y_bottom)
+
